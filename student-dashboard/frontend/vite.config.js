@@ -4,9 +4,9 @@ import tailwindcss from "@tailwindcss/vite";
 // imports the Tailwind plugin for Vite
 
 export default defineConfig({
-	plugins: [
-		react(),
-		tailwindcss(),
-		// adds Tailwind to the Vite build pipeline
-	],
+	plugins: [react(), tailwindcss()],
+	// Vercel looks for the 'dist' folder by default
+	build: {
+		outDir: "dist",
+	},
 });

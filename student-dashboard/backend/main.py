@@ -8,7 +8,7 @@ app = FastAPI()
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=["https://edu-metrics-fr3i.vercel.app"],
     # allow_origins=["*"] — allows requests from any origin
     # in production you'd replace "*" with your actual Vercel frontend URL
     allow_methods=["*"],
