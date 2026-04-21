@@ -1,3 +1,10 @@
+/**
+ * Line chart component for trend visualization.
+ * 
+ * Renders a responsive line chart with filled area and custom styling
+ * for the EduMetrics analytics dashboard.
+ */
+
 import { Line } from "react-chartjs-2";
 import {
 	Chart as ChartJS,
@@ -9,6 +16,7 @@ import {
 	Filler,
 } from "chart.js";
 
+// Register Chart.js components
 ChartJS.register(
 	CategoryScale,
 	LinearScale,
@@ -17,9 +25,9 @@ ChartJS.register(
 	Tooltip,
 	Filler,
 );
-// Filler — enables the fill area under the line
 
 const LineChart = ({ data }) => {
+	// Prepare chart data structure
 	const chartData = {
 		labels: Object.keys(data),
 		datasets: [
@@ -28,17 +36,16 @@ const LineChart = ({ data }) => {
 				borderColor: "#6366f1",
 				backgroundColor: "rgba(99, 102, 241, 0.1)",
 				fill: true,
-				// fill: true — fills the area under the line with backgroundColor
 				tension: 0.4,
 				pointRadius: 4,
 				pointBackgroundColor: "#6366f1",
 				pointBorderColor: "#0a0a0f",
-				// pointBorderColor — ring around each dot matches the background
 				pointBorderWidth: 2,
 			},
 		],
 	};
 
+	// Chart configuration options
 	const options = {
 		responsive: true,
 		maintainAspectRatio: false,

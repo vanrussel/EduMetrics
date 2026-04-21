@@ -1,9 +1,16 @@
+/**
+ * Key Performance Indicator cards component.
+ * 
+ * Displays important metrics in a responsive grid layout with
+ * labels, values, and descriptive subtitles.
+ */
 const KPICards = ({ data }) => {
+	// Define KPI card configurations
 	const cards = [
 		{ label: "Total Students", value: data.total_students, sub: "enrolled" },
 		{ label: "Avg Exam Score", value: data.avg_exam_score, sub: "current avg" },
 		{
-			label: "Avg Previous Score", // <-- Added new KPI
+			label: "Avg Previous Score",
 			value: data.avg_previous_scores,
 			sub: "historical baseline",
 		},
@@ -21,7 +28,7 @@ const KPICards = ({ data }) => {
 	];
 
 	return (
-		// Changed lg:grid-cols-5 to lg:grid-cols-6 so they fit in one perfect row
+		// Responsive grid layout for KPI cards
 		<div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
 			{cards.map((card) => (
 				<div

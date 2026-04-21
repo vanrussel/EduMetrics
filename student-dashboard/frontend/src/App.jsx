@@ -1,3 +1,10 @@
+/**
+ * Main application component for EduMetrics analytics dashboard.
+ * 
+ * Renders the complete student performance analytics interface with
+ * data fetching, filtering, and visualization components.
+ */
+
 import { useEffect, useState } from "react";
 import {
 	getKPIs,
@@ -13,11 +20,21 @@ import DoughnutChart from "./components/DoughnutChart.jsx";
 import PieChart from "./components/PieChart.jsx";
 import Filter from "./components/Filter.jsx";
 
-// helper — returns total student count label
+/**
+ * Format total student count with proper localization.
+ * @param {number} total - Total student count
+ * @returns {string} Formatted student count label
+ */
 const studentCountLabel = (total) =>
 	total != null ? `${total.toLocaleString()} students` : "";
 
-// helper — forces categorical data into a logical Low -> Medium -> High order
+/**
+ * Sort categorical data into logical Low -> Medium -> High order.
+ * Ensures consistent display order for categorical analytics.
+ * 
+ * @param {Object} dataObj - Data object with categorical keys
+ * @returns {Object} Sorted data object
+ */
 const sortCategories = (dataObj) => {
 	if (!dataObj) return {};
 	const order = ["Low", "Medium", "High"];
@@ -39,16 +56,19 @@ const sortCategories = (dataObj) => {
 };
 
 const App = () => {
+	// Component state management
 	const [gender, setGender] = useState("All");
 	const [data, setData] = useState(null);
 	const [error, setError] = useState(null);
 	const [loading, setLoading] = useState(true);
 
+	// Fetch analytics data when gender filter changes
 	useEffect(() => {
 		const fetchAll = async () => {
 			setLoading(true);
 			setError(null);
 			try {
+				// Parallel data fetching for better performance
 				const [kpis, dist, school, internet, teacher] = await Promise.all([
 					getKPIs(gender),
 					getScoreDistribution(gender),
@@ -57,6 +77,7 @@ const App = () => {
 					getExamScoreByTeacherQuality(gender),
 				]);
 
+				// Store fetched data with categorical sorting
 				setData({
 					kpis,
 					dist,
@@ -73,6 +94,7 @@ const App = () => {
 		fetchAll();
 	}, [gender]);
 
+	// Error state display
 	if (error)
 		return (
 			<div className="min-h-screen bg-[#0a0a0f] flex items-center justify-center">
@@ -82,7 +104,7 @@ const App = () => {
 
 	return (
 		<div className="min-h-screen bg-[#0a0a0f] p-4 md:p-6 lg:p-8 font-sans">
-			{/* header */}
+			{/* Header section with title and filter */}
 			<div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
 				<div>
 					<p className="text-zinc-500 text-xs uppercase tracking-widest mb-1">
@@ -95,6 +117,7 @@ const App = () => {
 				<Filter value={gender} onChange={setGender} />
 			</div>
 
+			{/* Loading state */}
 			{loading ? (
 				<div className="flex items-center justify-center py-32">
 					<p className="text-zinc-500 text-sm tracking-widest uppercase">
@@ -103,14 +126,12 @@ const App = () => {
 				</div>
 			) : (
 				<div className="flex flex-col gap-4">
-					{/* KPIs row */}
+					{/* KPI cards section */}
 					<KPICards data={data.kpis} />
 
-					{/* 4-COLUMN BENTO GRID */}
+					{/* Main content grid layout */}
 					<div className="grid grid-cols-1 lg:grid-cols-4 gap-4">
-						{/* ================= ROW 1 ================= */}
-
-						{/* Main Distribution Chart (Line Chart) -> 3 Columns */}
+						{/* First row: Score distribution and school type */}
 						<div className="lg:col-span-3 bg-[#111118] rounded-3xl border border-zinc-800 p-6 flex flex-col hover:border-zinc-700 transition-colors">
 							<div className="flex justify-between items-end mb-4">
 								<div>
@@ -130,7 +151,7 @@ const App = () => {
 							</div>
 						</div>
 
-						{/* School Type Doughnut -> 1 Column */}
+						{/* School type doughnut chart */}
 						<div className="lg:col-span-1 bg-[#111118] rounded-3xl border border-zinc-800 p-6 flex flex-col hover:border-zinc-700 transition-colors">
 							<div className="w-full mb-4">
 								<p className="text-zinc-500 text-[10px] uppercase tracking-widest mb-1">
@@ -145,9 +166,7 @@ const App = () => {
 							</div>
 						</div>
 
-						{/* ================= ROW 2 ================= */}
-
-						{/* Internet Access Pie -> 1 Column */}
+						{/* Second row: Internet access, teacher quality, and summary cards */}
 						<div className="lg:col-span-1 bg-[#111118] rounded-3xl border border-zinc-800 p-6 flex flex-col hover:border-zinc-700 transition-colors">
 							<div className="w-full mb-4">
 								<p className="text-zinc-500 text-[10px] uppercase tracking-widest mb-1">
@@ -162,7 +181,7 @@ const App = () => {
 							</div>
 						</div>
 
-						{/* Teacher Quality Bar -> 2 Columns (Swapped into the middle) */}
+						{/* Teacher quality bar chart */}
 						<div className="lg:col-span-2 bg-[#111118] rounded-3xl border border-zinc-800 p-6 flex flex-col hover:border-zinc-700 transition-colors">
 							<div className="flex justify-between items-end mb-4">
 								<div>
@@ -182,9 +201,9 @@ const App = () => {
 							</div>
 						</div>
 
-						{/* Stacked Top Range & Summary -> 1 Column (Swapped to the right) */}
+						{/* Summary cards column */}
 						<div className="lg:col-span-1 flex flex-col gap-4">
-							{/* Top Range */}
+							{/* Top performance range card */}
 							<div className="flex-1 bg-[#111118] rounded-3xl border border-zinc-800 p-5 flex flex-col justify-center hover:border-zinc-700 transition-colors">
 								<div>
 									<p className="text-zinc-500 text-[10px] uppercase tracking-widest mb-1">
@@ -213,7 +232,7 @@ const App = () => {
 								</div>
 							</div>
 
-							{/* Summary */}
+							{/* Overall summary card */}
 							<div className="flex-1 bg-[#111118] rounded-3xl border border-zinc-800 p-5 flex flex-col justify-center hover:border-zinc-700 transition-colors">
 								<div>
 									<p className="text-zinc-500 text-[10px] uppercase tracking-widest mb-1">

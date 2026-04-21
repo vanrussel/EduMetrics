@@ -1,30 +1,59 @@
+"""
+Cloud storage operations module for EduMetrics pipeline.
+
+This module handles downloading and uploading CSV files to/from Supabase storage,
+providing proper error handling and data conversion utilities.
+"""
+
 import io
 import pandas as pd
 from client import supabase
 
+
 def download_csv(bucket, path):
+    """
+    Download CSV file from Supabase storage and parse as DataFrame.
+    
+    Args:
+        bucket (str): Storage bucket name
+        path (str): File path within bucket
+        
+    Returns:
+        pandas.DataFrame: Parsed CSV data
+        
+    Raises:
+        Exception: For download or parsing errors
+    """
     try:
         response = supabase.storage.from_(bucket).download(path)
-        # downloads the file as raw bytes
     except Exception as e:
         raise Exception(f"Failed to download '{path}' from bucket '{bucket}': {e}")
-        # wraps the error with more context so you know exactly which file failed
 
     try:
         return pd.read_csv(io.BytesIO(response))
-        # parses the bytes into a DataFrame
     except Exception as e:
         raise Exception(f"Failed to parse CSV from '{path}': {e}")
-        # separate try/except so you know if the issue is downloading or parsing
 
 def upload_csv(df, bucket, path):
+    """
+    Upload DataFrame as CSV file to Supabase storage.
+    
+    Args:
+        df (pandas.DataFrame): Data to upload
+        bucket (str): Storage bucket name
+        path (str): Destination file path
+        
+    Raises:
+        Exception: For conversion or upload errors
+    """
     try:
+        # Convert DataFrame to CSV bytes with UTF-8 encoding
         cleaned_csv = df.to_csv(index=False).encode("utf-8")
-        # converts DataFrame to CSV bytes
     except Exception as e:
         raise Exception(f"Failed to convert DataFrame to CSV: {e}")
 
     try:
+        # Upload file with proper content type and upsert flag
         supabase.storage.from_(bucket).upload(
             path,
             cleaned_csv,

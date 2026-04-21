@@ -6,9 +6,17 @@ RAW_PATH = "raw/StudentPerformanceFactors.csv"
 CLEANED_PATH = "cleaned/StudentPerformanceFactors_cleaned.csv"
 BUCKET = "datasets"
 TABLE = "student_performance"
-# constants — defined once at the top so you only need to change them in one place
 
 def main():
+    """
+    Main pipeline orchestrator that processes student performance data.
+    
+    Pipeline stages:
+    1. Download raw CSV from cloud storage
+    2. Clean and normalize the data
+    3. Upload cleaned data back to storage
+    4. Insert cleaned data into database
+    """
     print("Starting pipeline...")
 
     try:
@@ -17,8 +25,6 @@ def main():
     except Exception as e:
         print(f"[Download Error] {e}")
         return
-        # return — stops the pipeline immediately if download fails
-        # no point continuing if we don't have the data
 
     try:
         print("Cleaning data...")
@@ -46,4 +52,5 @@ def main():
 
     print("Pipeline completed successfully")
 
-main()
+if __name__ == "__main__":
+    main()

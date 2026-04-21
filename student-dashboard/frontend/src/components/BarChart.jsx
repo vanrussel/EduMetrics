@@ -1,3 +1,10 @@
+/**
+ * Bar chart component for data visualization.
+ * 
+ * Renders a responsive bar chart with custom styling for the
+ * EduMetrics analytics dashboard.
+ */
+
 import { Bar } from "react-chartjs-2";
 import {
 	Chart as ChartJS,
@@ -7,9 +14,11 @@ import {
 	Tooltip,
 } from "chart.js";
 
+// Register Chart.js components
 ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip);
 
 const BarChart = ({ data }) => {
+	// Prepare chart data structure
 	const chartData = {
 		labels: Object.keys(data),
 		datasets: [
@@ -19,17 +28,16 @@ const BarChart = ({ data }) => {
 				hoverBackgroundColor: "#818cf8",
 				borderRadius: 6,
 				borderSkipped: false,
-				// borderSkipped: false — rounds all corners including the bottom
 			},
 		],
 	};
 
+	// Chart configuration options
 	const options = {
 		responsive: true,
 		maintainAspectRatio: false,
 		plugins: {
 			legend: { display: false },
-			// hides the legend since the chart title already explains the data
 		},
 		scales: {
 			x: {

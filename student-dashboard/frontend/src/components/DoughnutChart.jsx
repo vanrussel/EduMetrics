@@ -1,10 +1,19 @@
+/**
+ * Doughnut chart component for proportional data visualization.
+ * 
+ * Renders a responsive doughnut chart with data labels and custom styling
+ * for the EduMetrics analytics dashboard.
+ */
+
 import { Doughnut } from "react-chartjs-2";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import ChartDataLabels from "chartjs-plugin-datalabels";
 
+// Register Chart.js components and plugins
 ChartJS.register(ArcElement, Tooltip, Legend, ChartDataLabels);
 
 const DoughnutChart = ({ data }) => {
+	// Prepare chart data structure
 	const chartData = {
 		labels: Object.keys(data),
 		datasets: [
@@ -12,17 +21,16 @@ const DoughnutChart = ({ data }) => {
 				data: Object.values(data),
 				backgroundColor: ["#6366f1", "#a78bfa"],
 				borderWidth: 0,
-				// hoverOffset — how much a slice pops out on hover
 				hoverOffset: 6,
 			},
 		],
 	};
 
+	// Chart configuration options
 	const options = {
 		responsive: true,
 		maintainAspectRatio: false,
 		cutout: "65%",
-		// cutout — size of the hole in the middle (65% = thin ring)
 		plugins: {
 			legend: {
 				position: "bottom",
