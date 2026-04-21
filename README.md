@@ -12,7 +12,6 @@ A comprehensive student performance analytics platform that provides real-time i
 - [Configuration](#configuration)
 - [Running the Application](#running-the-application)
 - [Project Structure](#project-structure)
-- [API Documentation](#api-documentation)
 - [Data Pipeline](#data-pipeline)
 - [Contributing](#contributing)
 - [License](#license)
@@ -20,18 +19,21 @@ A comprehensive student performance analytics platform that provides real-time i
 ## Features
 
 ### Analytics Dashboard
+
 - **Real-time KPIs**: Track total students, average exam scores, attendance rates, study hours, and sleep patterns
 - **Interactive Visualizations**: Score distribution curves, demographic breakdowns, and performance trends
 - **Gender-based Filtering**: Analyze data by gender for comparative insights
 - **Responsive Design**: Optimized for desktop, tablet, and mobile devices
 
 ### Data Processing Pipeline
+
 - **Automated Data Cleaning**: Remove outliers, handle missing values, and normalize metrics
 - **Batch Processing**: Efficient processing of large datasets with configurable batch sizes
 - **Error Handling**: Comprehensive error tracking and recovery mechanisms
 - **Cloud Storage Integration**: Seamless integration with Supabase storage and database
 
 ### Key Metrics Tracked
+
 - Academic performance (exam scores, previous scores)
 - Study habits (hours studied, tutoring sessions)
 - Attendance and engagement metrics
@@ -51,6 +53,7 @@ EduMetrics/
 ```
 
 ### Data Flow
+
 1. **Raw Data** uploaded to cloud storage
 2. **Pipeline** processes and cleans the data
 3. **Cleaned Data** stored in database
@@ -60,6 +63,7 @@ EduMetrics/
 ## Technology Stack
 
 ### Frontend
+
 - **React 19** - Modern UI framework with hooks and concurrent features
 - **Vite 8** - Fast development server and build tool
 - **Tailwind CSS 4** - Utility-first CSS framework for responsive design
@@ -67,12 +71,14 @@ EduMetrics/
 - **Axios** - HTTP client for API communication
 
 ### Backend
+
 - **FastAPI** - Modern, fast web framework for building APIs
 - **Supabase** - Backend-as-a-Service providing database and storage
 - **Python 3.11+** - Core programming language
 - **Uvicorn** - ASGI server for production deployment
 
 ### Data Pipeline
+
 - **Pandas** - Data manipulation and analysis
 - **Python-dotenv** - Environment variable management
 - **Supabase Python Client** - Database and storage operations
@@ -91,7 +97,7 @@ Before installing EduMetrics, ensure you have the following:
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/your-username/EduMetrics.git
+git clone https://github.com/vanrussel/EduMetrics.git
 cd EduMetrics
 ```
 
@@ -100,35 +106,41 @@ cd EduMetrics
 Create environment files for each service:
 
 #### Backend Environment
+
 ```bash
 cd student-dashboard/backend
 cp .env.example .env
 ```
 
 Edit `.env` with your Supabase credentials:
+
 ```
 SUPABASE_URL=your_supabase_url
 SUPABASE_KEY=your_supabase_key
 ```
 
 #### Frontend Environment
+
 ```bash
 cd ../frontend
 cp .env.example .env
 ```
 
 Edit `.env`:
+
 ```
 VITE_API_URL=http://localhost:8000
 ```
 
 #### Pipeline Environment
+
 ```bash
 cd ../../pipeline
 cp .env.example .env
 ```
 
 Edit `.env`:
+
 ```
 SUPABASE_URL=your_supabase_url
 SUPABASE_KEY=your_supabase_key
@@ -137,18 +149,21 @@ SUPABASE_KEY=your_supabase_key
 ### 3. Install Dependencies
 
 #### Backend Dependencies
+
 ```bash
 cd student-dashboard/backend
 pip install -r requirements.txt
 ```
 
 #### Frontend Dependencies
+
 ```bash
 cd ../frontend
 npm install
 ```
 
 #### Pipeline Dependencies
+
 ```bash
 cd ../../pipeline
 pip install -r requirements.txt
@@ -187,11 +202,11 @@ CREATE TABLE student_performance (
 
 ### Environment Variables
 
-| Variable | Description | Required |
-|----------|-------------|----------|
-| `SUPABASE_URL` | Supabase project URL | Yes |
-| `SUPABASE_KEY` | Supabase anon/public key | Yes |
-| `VITE_API_URL` | Backend API URL | Yes |
+| Variable       | Description              | Required |
+| -------------- | ------------------------ | -------- |
+| `SUPABASE_URL` | Supabase project URL     | Yes      |
+| `SUPABASE_KEY` | Supabase anon/public key | Yes      |
+| `VITE_API_URL` | Backend API URL          | Yes      |
 
 ## Running the Application
 
@@ -229,7 +244,7 @@ EduMetrics/
   README.md                    # This file
   LICENSE                      # MIT License
   .gitignore                   # Git ignore patterns
-  
+
   pipeline/                    # Data processing pipeline
     main.py                    # Pipeline orchestrator
     client.py                  # Supabase client configuration
@@ -237,10 +252,10 @@ EduMetrics/
     database.py                # Database insertion logic
     storage.py                 # Cloud storage operations
     requirements.txt           # Python dependencies
-    
+
   student-dashboard/           # Main application
     package.json               # Root package configuration
-    
+
     backend/                   # FastAPI REST API
       main.py                  # API application entry point
       client.py                # Supabase client
@@ -249,7 +264,7 @@ EduMetrics/
       requirements.txt         # Python dependencies
       .env                     # Environment variables
       vercel.json              # Deployment configuration
-      
+
     frontend/                  # React dashboard
       src/
         App.jsx               # Main application component
@@ -264,56 +279,6 @@ EduMetrics/
           Filter.jsx          # Gender filter component
       package.json            # Frontend dependencies
       .env                    # Environment variables
-```
-
-## API Documentation
-
-### Base URL
-`http://localhost:8000/analytics`
-
-### Endpoints
-
-#### Key Performance Indicators
-```http
-GET /kpis?gender={gender}
-```
-Returns overall performance metrics.
-
-#### Score Distribution
-```http
-GET /score-distribution?gender={gender}
-```
-Returns score ranges and student counts.
-
-#### Demographic Analytics
-```http
-GET /exam-score-by-school-type?gender={gender}
-GET /exam-score-by-internet-access?gender={gender}
-GET /exam-score-by-teacher-quality?gender={gender}
-```
-
-#### Distribution Data
-```http
-GET /gender-distribution?gender={gender}
-GET /school-type-distribution?gender={gender}
-GET /internet-access-distribution?gender={gender}
-```
-
-### Query Parameters
-- `gender` (optional): Filter by `Male`, `Female`, or `All` (default)
-
-### Response Format
-All endpoints return JSON with appropriate data structures. Example:
-
-```json
-{
-  "total_students": 1250,
-  "avg_exam_score": 78.5,
-  "avg_hours_studied": 12.3,
-  "avg_attendance": 92.1,
-  "avg_previous_scores": 75.2,
-  "avg_sleep_hours": 7.8
-}
 ```
 
 ## Data Pipeline
@@ -347,6 +312,7 @@ python main.py
 ### Pipeline Configuration
 
 Key constants in `main.py`:
+
 - `RAW_PATH`: Input file location
 - `CLEANED_PATH`: Output file location
 - `BUCKET`: Storage bucket name
@@ -355,6 +321,7 @@ Key constants in `main.py`:
 ### Error Handling
 
 The pipeline includes comprehensive error handling:
+
 - Download failures stop execution immediately
 - Cleaning errors provide detailed diagnostic information
 - Database errors include batch-specific context
@@ -402,17 +369,18 @@ The backend is configured for serverless deployment via `vercel.json`:
 
 ```json
 {
-  "functions": {
-    "backend/main.py": {
-      "runtime": "python3.11"
-    }
-  }
+	"functions": {
+		"backend/main.py": {
+			"runtime": "python3.11"
+		}
+	}
 }
 ```
 
 ### Production Environment Variables
 
 Ensure all environment variables are set in your deployment platform:
+
 - Supabase URL and API keys
 - Frontend API URL
 - Any other service-specific credentials
@@ -442,6 +410,7 @@ Ensure all environment variables are set in your deployment platform:
 ### Common Issues
 
 **CORS Errors**
+
 ```bash
 # Check your environment variables
 echo $VITE_API_URL
@@ -449,22 +418,18 @@ echo $VITE_API_URL
 ```
 
 **Database Connection**
+
 ```bash
 # Verify Supabase credentials
 python -c "from client import supabase; print('Connected!')"
 ```
 
 **Pipeline Failures**
+
 ```bash
 # Check raw data format
 head -n 5 raw/StudentPerformanceFactors.csv
 ```
-
-### Getting Help
-
-- Check the [Issues](https://github.com/your-username/EduMetrics/issues) page
-- Review the [Wiki](https://github.com/your-username/EduMetrics/wiki) for detailed guides
-- Join our [Discord](https://discord.gg/your-invite) for community support
 
 ## License
 
