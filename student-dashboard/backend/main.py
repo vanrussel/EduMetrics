@@ -8,6 +8,7 @@ analytics with CORS support for frontend integration.
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from routes.analytics import router as analytics_router
+from routes.api_routes import router as ai_router
 
 # Initialize FastAPI application
 app = FastAPI(
@@ -26,3 +27,8 @@ app.add_middleware(
 
 # Include analytics router with /analytics prefix
 app.include_router(analytics_router, prefix="/analytics")
+app.include_router(ai_router, prefix="/api/ai", tags=["AI"])
+
+@app.get("/")
+def read_root():
+    return {"message": "EduMetrics API is running successfully!"}

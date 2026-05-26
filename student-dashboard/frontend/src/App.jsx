@@ -1,6 +1,6 @@
 /**
  * Main application component for EduMetrics analytics dashboard.
- * 
+ *
  * Renders the complete student performance analytics interface with
  * data fetching, filtering, and visualization components.
  */
@@ -19,6 +19,7 @@ import LineChart from "./components/LineChart.jsx";
 import DoughnutChart from "./components/DoughnutChart.jsx";
 import PieChart from "./components/PieChart.jsx";
 import Filter from "./components/Filter.jsx";
+import Aibot from "./components/Aibot.jsx";
 
 /**
  * Format total student count with proper localization.
@@ -31,7 +32,7 @@ const studentCountLabel = (total) =>
 /**
  * Sort categorical data into logical Low -> Medium -> High order.
  * Ensures consistent display order for categorical analytics.
- * 
+ *
  * @param {Object} dataObj - Data object with categorical keys
  * @returns {Object} Sorted data object
  */
@@ -263,6 +264,9 @@ const App = () => {
 					</div>
 				</div>
 			)}
+
+			{/* Formatted correctly as PascalCase for the JSX element */}
+			<Aibot dataset={data} />
 		</div>
 	);
 };
