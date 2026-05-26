@@ -47,11 +47,14 @@ export default function AIChatbot({ dataset }) {
 		setQuestion("");
 
 		try {
-			const response = await fetch("http://localhost:8000/api/ai/ask", {
-				method: "POST",
-				headers: { "Content-Type": "application/json" },
-				body: JSON.stringify({ question: finalQuestion, data: dataset }),
-			});
+			const response = await fetch(
+				`${import.meta.env.VITE_API_URL}/api/ai/ask`,
+				{
+					method: "POST",
+					headers: { "Content-Type": "application/json" },
+					body: JSON.stringify({ question: finalQuestion, data: dataset }),
+				},
+			);
 
 			const result = await response.json();
 			const aiMessage = { sender: "ai", text: result.answer };
